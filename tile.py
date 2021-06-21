@@ -18,28 +18,31 @@ class Tile:
         """
         self._display = display
         self._rect = rect
-        self._wall = False
+        self._path = False
         self._visited = False
-        self._valid = True  # assume the tile is valid initially
+        self._valid = False  # assume the tile is invalid initially
         self._start = False
         self._goal = False
 
-    def set_wall(self, value):
+    def set_path(self, value):
         """
-        Set whether the tile is a wall or not
+        Set whether the tile is a path or not
         :param value: the value to set
         :type value: bool
         """
-        self._wall = value
-        if self.is_wall():
-            self.invalidate()
-        else:
+        self._path = value
+
+        if self.is_path():
             self._valid = True
+        else:
+            self.invalidate()
 
     def set_as_start(self):
+        self._valid = True
         self._start = True
 
     def set_as_goal(self):
+        self._valid = True
         self._goal = True
 
     def visit(self):
@@ -48,8 +51,8 @@ class Tile:
     def invalidate(self):
         self._valid = False
 
-    def is_wall(self):
-        return self._wall
+    def is_path(self):
+        return self._path
 
     def is_visited(self):
         return self._visited
@@ -68,18 +71,20 @@ class Tile:
         Draw the current state of the tile
         :return:
         """
-        if self.is_wall():
+        if self.is_start() or self.is_goal():
+            color = self._RED
+        elif not self.is_path():
             color = self._BLACK
         elif self.is_visited() and self.is_valid():
             color = self._GREEN
-        elif self.is_start() or self.is_goal():
-            color = self._RED
         else:
             color = self._WHITE
 
         pygame.draw.rect(self._display, color, self._rect)
 
     def reset(self):
-        self._wall = False
+        self._path = False
         self._visited = False
-        self._valid = True
+
+        if not self.is_start() and not self.is_goal():
+            self._valid = False

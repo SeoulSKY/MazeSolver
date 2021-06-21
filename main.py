@@ -11,14 +11,14 @@ WIDTH = 720
 HEIGHT = 720
 FPS = 60
 
-MAZE_SIZE = (10, 10)
+MAZE_SIZE = (20, 20)
 
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 MAZE = Maze(DISPLAY, MAZE_SIZE)
 
 
 def draw_display():
-    DISPLAY.fill(WHITE)
+    DISPLAY.fill(BLACK)
     MAZE.draw()
     pygame.display.update()
 

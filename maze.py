@@ -57,7 +57,7 @@ class Maze:
         target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
 
         if not target_tile.is_start() and not target_tile.is_goal():
-            target_tile.set_wall(True)
+            target_tile.set_path(True)
 
     def right_click(self, pos):
         """
@@ -68,7 +68,7 @@ class Maze:
         target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
 
         if not target_tile.is_start() and not target_tile.is_goal():
-            target_tile.set_wall(False)
+            target_tile.set_path(False)
 
     def solve(self):
         """
