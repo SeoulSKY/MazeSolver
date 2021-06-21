@@ -11,8 +11,10 @@ WIDTH = 720
 HEIGHT = 720
 FPS = 60
 
+MAZE_SIZE = (10, 10)
+
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
-MAZE = Maze(DISPLAY, (50, 50))
+MAZE = Maze(DISPLAY, MAZE_SIZE)
 
 
 def draw_display():
@@ -40,13 +42,15 @@ def main():
                 dragging = False
 
             if dragging:
-                MAZE.click(pygame.mouse.get_pos())
+                MAZE.left_click(pygame.mouse.get_pos())
 
-            if event.type == pygame.K_ESCAPE:
-                MAZE.reset()
+            # check for keys pressed down
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    MAZE.reset()
 
-            if event.type == pygame.K_RETURN:
-                MAZE.solve()
+                if event.key == pygame.K_SPACE:
+                    MAZE.solve()
 
         draw_display()
 

@@ -26,6 +26,7 @@ class Tile:
 
     def set_as_wall(self):
         self._wall = True
+        self.invalidate()
 
     def set_as_start(self):
         self._start = True
