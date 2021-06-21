@@ -24,9 +24,17 @@ class Tile:
         self._start = False
         self._goal = False
 
-    def set_as_wall(self):
-        self._wall = True
-        self.invalidate()
+    def set_wall(self, value):
+        """
+        Set whether the tile is a wall or not
+        :param value: the value to set
+        :type value: bool
+        """
+        self._wall = value
+        if self.is_wall():
+            self.invalidate()
+        else:
+            self._valid = True
 
     def set_as_start(self):
         self._start = True

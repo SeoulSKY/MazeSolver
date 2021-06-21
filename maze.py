@@ -33,7 +33,7 @@ class Maze:
             self._board.append(row)
 
         # make the tile that is pointed by the cursor as start
-        start_tile = self._board[self._cursor[0]][self._cursor[1]]
+        start_tile = self._get_tile()
         start_tile.set_as_start()
 
         # make the bottom right tile as the goal
@@ -50,19 +50,30 @@ class Maze:
 
     def left_click(self, pos):
         """
-        Left click the tile in the given position
+        Left click the tile on the given position
         :param pos: the position to click
         :type pos: Tuple[int, int]
         """
         target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
 
         if not target_tile.is_start() and not target_tile.is_goal():
-            target_tile.set_as_wall()
+            target_tile.set_wall(True)
+
+    def right_click(self, pos):
+        """
+        Right click the title on the given position
+        :param pos: the position to click
+        :return: Tuple[int, int]
+        """
+        target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
+
+        if not target_tile.is_start() and not target_tile.is_goal():
+            target_tile.set_wall(False)
 
     def solve(self):
         """
         Solve the maze
-        :return: True if the goal has reached, False otherwise
+        :return: True if the goal has been reached, False otherwise
         """
         self._get_tile().visit()    # set current tile as visited
 
@@ -237,7 +248,7 @@ class Maze:
 
     def reset(self):
         """
-        Reset the board
+        Reset the maze
         """
         self._cursor[0] = 0
         self._cursor[1] = 0

@@ -41,8 +41,10 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 dragging = False
 
-            if dragging:
+            if dragging and pygame.mouse.get_pressed(3)[0]:
                 MAZE.left_click(pygame.mouse.get_pos())
+            elif dragging and pygame.mouse.get_pressed(3)[2]:
+                MAZE.right_click(pygame.mouse.get_pos())
 
             # check for keys pressed down
             if event.type == pygame.KEYDOWN:
