@@ -83,17 +83,18 @@ class Maze:
 
         found_goal = False
 
-        # visit the upper tile
-        if self._has_upper_tile() and not self._get_upper_tile().is_visited() and self._get_upper_tile().is_valid():
-            self._move_up()
+        # visit the lower tile
+        if self._has_lower_tile() and not self._get_lower_tile().is_visited() and \
+                self._get_lower_tile().is_valid():
+            self._move_down()
 
             found_goal = self.solve()
 
             if found_goal:
                 return True
             else:
-                self._get_tile().invalidate()   # invalidate the upper tile
-                self._move_down()   # revert the cursor
+                self._get_tile().invalidate()   # invalidate the downer tile
+                self._move_up()  # revert the cursor
 
         # visit the right tile
         if not found_goal and self._has_right_tile() and not self._get_right_tile().is_visited() and \
@@ -108,18 +109,18 @@ class Maze:
                 self._get_tile().invalidate()   # invalidate the right tile
                 self._move_left()  # revert the cursor
 
-        # visit the lower tile
-        if not found_goal and self._has_lower_tile() and not self._get_lower_tile().is_visited() and \
-                self._get_lower_tile().is_valid():
-            self._move_down()
+        # visit the upper tile
+        if not found_goal and self._has_upper_tile() and not self._get_upper_tile().is_visited() and \
+                self._get_upper_tile().is_valid():
+            self._move_up()
 
             found_goal = self.solve()
 
             if found_goal:
                 return True
             else:
-                self._get_tile().invalidate()   # invalidate the downer tile
-                self._move_up()  # revert the cursor
+                self._get_tile().invalidate()   # invalidate the upper tile
+                self._move_down()   # revert the cursor
 
         # visit the left tile
         if not found_goal and self._has_left_tile() and not self._get_left_tile().is_visited() and \
