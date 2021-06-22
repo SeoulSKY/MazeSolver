@@ -33,9 +33,10 @@ class Tile:
         self._path = value
 
         if self.is_path():
-            self._valid = True
+            self.validate()
         else:
             self.invalidate()
+            self.un_visit()
 
     def set_as_start(self):
         self._valid = True
@@ -47,6 +48,12 @@ class Tile:
 
     def visit(self):
         self._visited = True
+
+    def un_visit(self):
+        self._visited = False
+
+    def validate(self):
+        self._valid = True
 
     def invalidate(self):
         self._valid = False

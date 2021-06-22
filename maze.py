@@ -247,9 +247,24 @@ class Maze:
 
         return self._board[self._cursor[0] + 1][self._cursor[1]]
 
+    def un_solve(self):
+        """
+        Un-solve the maze so that it can be solved again.
+        """
+        self._cursor[0] = 0
+        self._cursor[1] = 0
+
+        for i in range(self._x_num_tiles):
+            for j in range(self._y_num_tiles):
+                tile = self._board[i][j]
+
+                if tile.is_path() or tile.is_start() or tile.is_goal():
+                    tile.validate()
+                    tile.un_visit()
+
     def reset(self):
         """
-        Reset the maze
+        Reset the maze including the path created by user
         """
         self._cursor[0] = 0
         self._cursor[1] = 0

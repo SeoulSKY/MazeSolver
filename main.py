@@ -52,6 +52,7 @@ def main():
                     MAZE.reset()
 
                 if event.key == pygame.K_SPACE:
+                    MAZE.un_solve()
                     MAZE.solve()
 
         draw_display()
