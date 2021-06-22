@@ -36,7 +36,8 @@ class Tile:
             self.validate()
         else:
             self.invalidate()
-            self.un_visit()
+
+        self.un_visit()
 
     def set_as_start(self):
         self._valid = True
