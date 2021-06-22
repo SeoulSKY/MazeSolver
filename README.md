@@ -9,7 +9,7 @@ How to use:
 * the black tiles are the walls.
 * hold left-click and drag to create paths for the maze. It will be represented as white.
 * to delete the path, hold right-click and drag.
-* press space to solve the maze. The solution will be represented as green.
+* press space to solve the maze. The solution will be represented as green. Moving diagonal is not allowed.
 * press escape to reset the solution and clear the drawn paths.
 
 How to set up (ubuntu):

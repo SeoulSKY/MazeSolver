@@ -40,12 +40,12 @@ class Tile:
         self.un_visit()
 
     def set_as_start(self):
-        self._valid = True
         self._start = True
+        self.validate()
 
     def set_as_goal(self):
-        self._valid = True
         self._goal = True
+        self.validate()
 
     def visit(self):
         self._visited = True
