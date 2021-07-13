@@ -1,7 +1,7 @@
 import concurrent.futures
 import sys
 from tkinter import Tk
-from tkinter.messagebox import showinfo, askyesno, askretrycancel
+from tkinter.messagebox import showinfo, askyesno
 
 import pygame
 
@@ -17,8 +17,6 @@ BLACK = (0, 0, 0)
 WIDTH = 720
 HEIGHT = 720
 FPS = 60
-
-print(askretrycancel("test", "test"))
 
 MAZE_SIZE = (20, 20)
 
