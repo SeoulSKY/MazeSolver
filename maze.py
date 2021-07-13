@@ -11,7 +11,7 @@ class Maze:
     def __init__(self, display, num_tiles):
         """
         Maze constructor
-        :param display: pygame diwrotesplay
+        :param display: pygame display
         :type display: Surface
         :param num_tiles: (x, y)
         :type num_tiles: Tuple[int, int]
