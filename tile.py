@@ -7,6 +7,7 @@ class Tile:
     _BLACK = (0, 0, 0)
     _GREEN = (0, 255, 0)
     _RED = (255, 0, 0)
+    _GREY = (105, 105, 105)
 
     def __init__(self, display, rect):
         """
@@ -83,8 +84,11 @@ class Tile:
             color = self._RED
         elif not self.is_path():
             color = self._BLACK
-        elif self.is_visited() and self.is_valid():
-            color = self._GREEN
+        elif self.is_visited():
+            if self.is_valid():
+                color = self._GREEN
+            else:
+                color = self._GREY
         else:
             color = self._WHITE
 

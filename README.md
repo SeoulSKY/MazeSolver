@@ -4,19 +4,19 @@ This program solves the maze drawn by the user using a backtracking algorithm.
 
 How to use:
 - 
-* the red tile in the top-left corner is the start point.
-* the red tile in the bottom-right corner is the goal.
-* the black tiles are the walls.
-* hold left-click and drag to create paths for the maze. It will be represented as white.
-* to delete the path, hold right-click and drag.
-* press space to solve the maze. The solution will be represented as green. Moving diagonally is not allowed.
-* press escape to reset the solution and clear the drawn paths.
+* The red tile in the top-left corner is the start point.
+* The red tile in the bottom-right corner is the goal.
+* The black tiles are the walls.
+* The grey tiles represent that they have been visited but decided not to be a correct path.
+* Hold left-click and drag to create paths for the maze. It will be represented as white.
+* To delete the path, hold right-click and drag.
+* Press space to solve the maze. The solution will be represented as green. Moving diagonally is not allowed.
+* Press escape to reset the solution and clear the drawn paths.
 
 How to set up (ubuntu):
 -
-* use the following command in terminal to install the required packages automatically: pip3 install -r requirements.txt
-* manually install tkinter with this command: sudo apt-get install python3-tk
+Use the following command in terminal to install the required packages automatically: `pip install -r requirements.txt`
 
 How to run the program:
 -
-* after setting up, run main.py
+Run `main.py`

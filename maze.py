@@ -1,6 +1,9 @@
 import math
+from concurrent.futures import ThreadPoolExecutor
 
+import pygame
 from pygame import Surface, Rect
+
 from tile import Tile
 
 
@@ -70,12 +73,24 @@ class Maze:
         if not target_tile.is_start() and not target_tile.is_goal():
             target_tile.set_path(False)
 
-    def solve(self):
+    def solve(self, show_step):
         """
         Solve the maze
+        :return: A future that will return True if the goal has been reached, or False otherwise
+        """
+        return ThreadPoolExecutor().submit(self._solve, show_step)
+
+    def _solve(self, show_step):
+        """
+        Helper to solve the maze
         :return: True if the goal has been reached, False otherwise
         """
         self._get_tile().visit()    # set current tile as visited
+
+        if show_step:
+            self.draw()
+            pygame.display.update()
+            pygame.time.wait(10)
 
         # base case
         if self._get_tile().is_goal():
@@ -88,7 +103,7 @@ class Maze:
                 self._get_lower_tile().is_valid():
             self._move_down()
 
-            found_goal = self.solve()
+            found_goal = self._solve(show_step)
 
             if found_goal:
                 return True
@@ -101,7 +116,7 @@ class Maze:
                 self._get_right_tile().is_valid():
             self._move_right()
 
-            found_goal = self.solve()
+            found_goal = self._solve(show_step)
 
             if found_goal:
                 return True
@@ -114,7 +129,7 @@ class Maze:
                 self._get_upper_tile().is_valid():
             self._move_up()
 
-            found_goal = self.solve()
+            found_goal = self._solve(show_step)
 
             if found_goal:
                 return True
@@ -127,7 +142,7 @@ class Maze:
                 self._get_left_tile().is_valid():
             self._move_left()
 
-            found_goal = self.solve()
+            found_goal = self._solve(show_step)
 
             if found_goal:
                 return True
