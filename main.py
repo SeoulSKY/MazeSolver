@@ -1,5 +1,5 @@
-import concurrent.futures
 import sys
+from threading import Thread
 from tkinter import Tk
 from tkinter.messagebox import showinfo, askyesno
 
@@ -7,7 +7,8 @@ import pygame
 
 from maze import Maze
 
-Tk().withdraw()  # don't display the tk window to only use messageboxes
+tk = Tk()
+tk.withdraw()  # don't display the tk window to only use messageboxes
 
 pygame.init()
 pygame.display.set_caption("Maze Solver")
@@ -22,6 +23,9 @@ MAZE_SIZE = (20, 20)
 
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 MAZE = Maze(DISPLAY, MAZE_SIZE)
+
+# whether the maze is being solved or not
+solving = False
 
 
 def draw_display():
@@ -40,6 +44,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+
+                # exit the tk thread
+                tk.quit()
+
+                # exit the current thread
                 sys.exit(0)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -59,17 +68,26 @@ def main():
                     MAZE.reset()
 
                 # solve the maze
-                if event.key == pygame.K_SPACE:
+                global solving
+                if event.key == pygame.K_SPACE and not solving:
+                    solving = True
+
                     show_step = askyesno(message="Show step?")
 
                     MAZE.un_solve()
                     future = MAZE.solve(show_step)
 
-                    for f in concurrent.futures.as_completed([future]):
-                        found_path = f.result()
+                    def callback(fut):
+                        found_path = fut.result()
 
                         if not found_path:
-                            showinfo("Result", "Path Not Found!")
+                            # call showinfo() in the tk thread
+                            tk.after(0, lambda: showinfo("Result", "Path Not Found!"))
+
+                        global solving
+                        solving = False
+
+                    future.add_done_callback(callback)
 
         draw_display()
 
@@ -84,4 +102,9 @@ if __name__ == "__main__":
                             "• Press space to solve the maze.\n"
                             "• The solution will be represented as green. Moving diagonally is not allowed.\n"
                             "• Press escape to reset the solution and clear the drawn paths.")
-    main()
+
+    # Run the main function in a separate thread
+    Thread(target=main).start()
+
+    # activate tk thread for message boxes
+    tk.mainloop()

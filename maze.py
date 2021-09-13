@@ -16,6 +16,8 @@ class Maze:
         :param num_tiles: (x, y)
         :type num_tiles: Tuple[int, int]
         """
+        self._executor = ThreadPoolExecutor(max_workers=1)
+
         self._display = display
         self._x_num_tiles = num_tiles[0]
         self._y_num_tiles = num_tiles[1]
@@ -78,7 +80,7 @@ class Maze:
         Solve the maze
         :return: A future that will return True if the goal has been reached, or False otherwise
         """
-        return ThreadPoolExecutor().submit(self._solve, show_step)
+        return self._executor.submit(self._solve, show_step)
 
     def _solve(self, show_step):
         """
@@ -89,7 +91,6 @@ class Maze:
 
         if show_step:
             self.draw()
-            pygame.display.update()
             pygame.time.wait(10)
 
         # base case
