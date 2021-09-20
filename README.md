@@ -15,8 +15,14 @@ How to use:
 
 How to set up (ubuntu):
 -
-Use the following command in terminal to install the required packages automatically: `pip install -r requirements.txt`
+Use the following command in terminal to install the required packages automatically:
+```
+pip install -r requirements.txt
+```
 
 How to run the program:
 -
 Run `main.py`
+```
+python main.py
+```
