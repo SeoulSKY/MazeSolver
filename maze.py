@@ -1,5 +1,6 @@
 import math
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, Future
+from typing import Tuple
 
 import pygame
 from pygame import Surface, Rect
@@ -8,24 +9,22 @@ from tile import Tile
 
 
 class Maze:
-    def __init__(self, display, num_tiles):
+    def __init__(self, display: Surface, num_tiles: Tuple[int, int]):
         """
         Maze constructor
         :param display: pygame display
-        :type display: Surface
         :param num_tiles: (x, y)
-        :type num_tiles: Tuple[int, int]
         """
-        self._executor = ThreadPoolExecutor(max_workers=1)
+        self._executor: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=1)
 
-        self._display = display
-        self._x_num_tiles = num_tiles[0]
-        self._y_num_tiles = num_tiles[1]
+        self._display: Surface = display
+        self._x_num_tiles: int = num_tiles[0]
+        self._y_num_tiles: int = num_tiles[1]
         self._board = []  # 2d list for tiles
         self._cursor = [0, 0]  # cursor of the board to point a certain tile
 
-        self._tile_width = display.get_width() / self._x_num_tiles
-        self._tile_height = display.get_height() / self._y_num_tiles
+        self._tile_width: float = display.get_width() / self._x_num_tiles
+        self._tile_height: float = display.get_height() / self._y_num_tiles
 
         for i in range(self._x_num_tiles):
             row = []  # current row for the board
@@ -45,7 +44,7 @@ class Maze:
         goal_tile = self._board[self._x_num_tiles - 1][self._y_num_tiles - 1]
         goal_tile.set_as_goal()
 
-    def draw(self):
+    def draw(self) -> None:
         """
         Draw the maze object
         """
@@ -53,36 +52,34 @@ class Maze:
             for j in range(self._y_num_tiles):
                 self._board[i][j].draw()
 
-    def left_click(self, pos):
+    def set_as_path(self, pos: Tuple[int, int]) -> None:
         """
-        Left click the tile on the given position
-        :param pos: the position to click
-        :type pos: Tuple[int, int]
+        Set the tile on the given position as path
+        :param pos: the position
         """
         target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
 
         if not target_tile.is_start() and not target_tile.is_goal():
             target_tile.set_path(True)
 
-    def right_click(self, pos):
+    def set_as_wall(self, pos: Tuple[int, int]) -> None:
         """
-        Right click the title on the given position
-        :param pos: the position to click
-        :return: Tuple[int, int]
+        Set the tile on the given position as wall
+        :param pos: the position
         """
         target_tile = self._board[math.floor(pos[0] / self._tile_width)][math.floor(pos[1] / self._tile_height)]
 
         if not target_tile.is_start() and not target_tile.is_goal():
             target_tile.set_path(False)
 
-    def solve(self, show_step):
+    def solve(self, show_step: bool) -> Future[bool]:
         """
         Solve the maze
         :return: A future that will return True if the goal has been reached, or False otherwise
         """
         return self._executor.submit(self._solve, show_step)
 
-    def _solve(self, show_step):
+    def _solve(self, show_step: bool) -> bool:
         """
         Helper to solve the maze
         :return: True if the goal has been reached, False otherwise
@@ -90,7 +87,6 @@ class Maze:
         self._get_tile().visit()    # set current tile as visited
 
         if show_step:
-            self.draw()
             pygame.time.wait(10)
 
         # base case
@@ -153,14 +149,14 @@ class Maze:
 
         return False
 
-    def _has_upper_tile(self):
+    def _has_upper_tile(self) -> bool:
         """
         Check if there is the upper tile from the cursor.
         :return: True if it has, False otherwise
         """
         return self._cursor[1] > 0
 
-    def _move_up(self):
+    def _move_up(self) -> None:
         """
         Move the cursor to point the upper tile from the current tile
         """
@@ -169,14 +165,14 @@ class Maze:
 
         self._cursor[1] -= 1
 
-    def _has_lower_tile(self):
+    def _has_lower_tile(self) -> bool:
         """
         Check if there is the lower tile from the cursor.
         :return: True if it has, False otherwise
         """
         return self._cursor[1] < self._y_num_tiles - 1
 
-    def _move_down(self):
+    def _move_down(self) -> None:
         """
         Move the cursor to point the ㅣㅐㅈㄷ tile from the current tile
         """
@@ -184,14 +180,14 @@ class Maze:
             raise RuntimeError("There is no lower tile to move.")
         self._cursor[1] += 1
 
-    def _has_left_tile(self):
+    def _has_left_tile(self) -> bool:
         """
         Check if there is left tile from the cursor.
         :return: True if it has, False otherwise
         """
         return self._cursor[0] > 0
 
-    def _move_left(self):
+    def _move_left(self) -> None:
         """
         Move the cursor to point the left tile from the current tile
         """
@@ -200,14 +196,14 @@ class Maze:
 
         self._cursor[0] -= 1
 
-    def _has_right_tile(self):
+    def _has_right_tile(self) -> bool:
         """
         Check if there is right tile from the cursor
         :return: True if it has, False otherwise
         """
         return self._cursor[0] < self._x_num_tiles - 1
 
-    def _move_right(self):
+    def _move_right(self) -> None:
         """
         Move the cursor to point the right tile from the current tile
         """
@@ -216,14 +212,14 @@ class Maze:
 
         self._cursor[0] += 1
 
-    def _get_tile(self):
+    def _get_tile(self) -> Tile:
         """
         Returns the tile that is pointed by the cursor
         :return: the tile
         """
         return self._board[self._cursor[0]][self._cursor[1]]
 
-    def _get_upper_tile(self):
+    def _get_upper_tile(self) -> Tile:
         """
         Returns the upper tile from the cursor.
         :return: the tile
@@ -233,7 +229,7 @@ class Maze:
 
         return self._board[self._cursor[0]][self._cursor[1] - 1]
 
-    def _get_lower_tile(self):
+    def _get_lower_tile(self) -> Tile:
         """
         Returns the lower tile from the cursor.
         :return: the tile
@@ -243,7 +239,7 @@ class Maze:
 
         return self._board[self._cursor[0]][self._cursor[1] + 1]
 
-    def _get_left_tile(self):
+    def _get_left_tile(self) -> Tile:
         """
         Returns the left tile from the cursor.
         :return: the tile
@@ -253,7 +249,7 @@ class Maze:
 
         return self._board[self._cursor[0] - 1][self._cursor[1]]
 
-    def _get_right_tile(self):
+    def _get_right_tile(self) -> Tile:
         """
         Returns the right tile from the cursor.
         :return: the tile
@@ -263,7 +259,7 @@ class Maze:
 
         return self._board[self._cursor[0] + 1][self._cursor[1]]
 
-    def un_solve(self):
+    def un_solve(self) -> None:
         """
         Un-solve the maze so that it can be solved again.
         """
@@ -278,7 +274,7 @@ class Maze:
                     tile.validate()
                     tile.un_visit()
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Reset the maze including the path created by user
         """

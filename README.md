@@ -1,6 +1,6 @@
 # Maze Solver
 
-This program solves the maze drawn by the user using a backtracking algorithm.
+This program solves the maze drawn by the user using backtracking algorithm.
 
 How to use:
 - 
@@ -13,9 +13,9 @@ How to use:
 * Press space to solve the maze. The solution will be represented as green. Moving diagonally is not allowed.
 * Press escape to reset the solution and clear the drawn paths.
 
-How to set up (ubuntu):
+How to set up:
 -
-Use the following command in terminal to install the required packages automatically:
+Use the following command in terminal to install the required packages:
 ```
 pip install -r requirements.txt
 ```

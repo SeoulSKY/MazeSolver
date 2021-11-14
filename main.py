@@ -28,13 +28,19 @@ MAZE = Maze(DISPLAY, MAZE_SIZE)
 solving = False
 
 
-def draw_display():
+def draw_display() -> None:
+    """
+    Draw the objects
+    """
     DISPLAY.fill(BLACK)
     MAZE.draw()
     pygame.display.update()
 
 
-def main():
+def main() -> None:
+    """
+    Run the app
+    """
     clock = pygame.time.Clock()
     dragging = False
 
@@ -57,18 +63,19 @@ def main():
                 dragging = False
 
             if dragging and pygame.mouse.get_pressed(3)[0]:
-                MAZE.left_click(pygame.mouse.get_pos())
+                MAZE.set_as_path(pygame.mouse.get_pos())
             elif dragging and pygame.mouse.get_pressed(3)[2]:
-                MAZE.right_click(pygame.mouse.get_pos())
+                MAZE.set_as_wall(pygame.mouse.get_pos())
 
             # check for keys pressed down
             if event.type == pygame.KEYDOWN:
+                global solving
+
                 # reset the maze
-                if event.key == pygame.K_ESCAPE:
+                if not solving and event.key == pygame.K_ESCAPE:
                     MAZE.reset()
 
                 # solve the maze
-                global solving
                 if event.key == pygame.K_SPACE and not solving:
                     solving = True
 
@@ -81,7 +88,7 @@ def main():
                         found_path = fut.result()
 
                         if not found_path:
-                            # call showinfo() in the tk thread
+                            # call showinfo() from the tk thread
                             tk.after(0, lambda: showinfo("Result", "Path Not Found!"))
 
                         global solving
