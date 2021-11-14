@@ -1,4 +1,4 @@
-import pygame.draw
+from pygame import draw, Surface, Rect
 
 
 class Tile:
@@ -9,7 +9,7 @@ class Tile:
     _RED = (255, 0, 0)
     _GREY = (105, 105, 105)
 
-    def __init__(self, display, rect):
+    def __init__(self, display: Surface, rect: Rect):
         """
         Tile constructor
         :param display: The display to display this tile
@@ -17,13 +17,13 @@ class Tile:
         :param rect: The rectangle object for this tile
         :type rect: pygame.Rect
         """
-        self._display = display
-        self._rect = rect
-        self._path = False
-        self._visited = False
-        self._valid = False  # assume the tile is invalid initially
-        self._start = False
-        self._goal = False
+        self._display: Surface = display
+        self._rect: Rect = rect
+        self._path: bool = False
+        self._visited: bool = False
+        self._valid: bool = False  # assume the tile is invalid initially
+        self._start: bool = False
+        self._goal: bool = False
 
     def set_path(self, value: bool) -> None:
         """
@@ -129,7 +129,7 @@ class Tile:
         else:
             color = self._WHITE
 
-        pygame.draw.rect(self._display, color, self._rect)
+        draw.rect(self._display, color, self._rect)
 
     def reset(self) -> None:
         """
