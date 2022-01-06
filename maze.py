@@ -189,7 +189,7 @@ class Maze:
 
     def _move_down(self) -> None:
         """
-        Move the cursor to point the ㅣㅐㅈㄷ tile from the current tile
+        Move the cursor to point the downer tile from the current tile
         """
         if not self._has_lower_tile():
             raise RuntimeError("There is no lower tile to move.")
