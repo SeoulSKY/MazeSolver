@@ -24,9 +24,6 @@ MAZE_SIZE = (20, 20)
 DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 MAZE = Maze(DISPLAY, MAZE_SIZE)
 
-# whether the maze is being solved or not
-solving = False
-
 
 def draw_display() -> None:
     """
@@ -68,17 +65,14 @@ def main() -> None:
                 MAZE.set_as_wall(pygame.mouse.get_pos())
 
             # check for keys pressed down
-            if event.type == pygame.KEYDOWN:
-                global solving
+            if event.type == pygame.KEYDOWN and not MAZE.is_solving():
 
                 # reset the maze
-                if not solving and event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     MAZE.reset()
 
                 # solve the maze
-                if event.key == pygame.K_SPACE and not solving:
-                    solving = True
-
+                if event.key == pygame.K_SPACE:
                     show_step = askyesno(message="Show step?")
 
                     MAZE.un_solve()
@@ -90,9 +84,6 @@ def main() -> None:
                         if not found_path:
                             # call showinfo() from the tk thread
                             tk.after(0, lambda: showinfo("Result", "Path Not Found!"))
-
-                        global solving
-                        solving = False
 
                     future.add_done_callback(callback)
 

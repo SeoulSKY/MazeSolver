@@ -24,5 +24,5 @@ How to run the program:
 -
 Run `main.py`
 ```
-python main.py
+python3 main.py
 ```

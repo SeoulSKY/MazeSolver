@@ -16,6 +16,7 @@ class Maze:
         :param num_tiles: (x, y)
         """
         self._executor: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=1)
+        self._solving = False
 
         self._display: Surface = display
         self._x_num_tiles: int = num_tiles[0]
@@ -43,6 +44,13 @@ class Maze:
         # make the bottom right tile as the goal
         goal_tile = self._board[self._x_num_tiles - 1][self._y_num_tiles - 1]
         goal_tile.set_as_goal()
+
+
+    def is_solving(self) -> bool:
+        """
+        Check if the maze is being solved or not
+        """
+        return self._solving
 
     def draw(self) -> None:
         """
@@ -77,7 +85,14 @@ class Maze:
         Solve the maze
         :return: A future that will return True if the goal has been reached, or False otherwise
         """
-        return self._executor.submit(self._solve, show_step)
+        self._solving = True
+        future = self._executor.submit(self._solve, show_step)
+
+        def callback(fut):
+            self._solving = False
+
+        future.add_done_callback(callback)
+        return future
 
     def _solve(self, show_step: bool) -> bool:
         """

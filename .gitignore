@@ -1,2 +1,3 @@
-/venu/
+/venv/
 /.idea/
+__pycache__
