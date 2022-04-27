@@ -2,6 +2,8 @@
 
 This program solves the maze drawn by the user using backtracking algorithm.
 
+https://user-images.githubusercontent.com/48105703/165434098-c19b9692-1cfd-40dd-952b-924404262f0c.mp4
+
 How to use:
 - 
 * The red tile in the top-left corner is the start point.
